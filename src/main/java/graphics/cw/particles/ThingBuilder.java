@@ -1,31 +1,49 @@
 package graphics.cw.particles;
 
+import com.sun.tools.internal.jxc.ap.Const;
+import graphics.cw.Constants;
+
 import java.util.ArrayList;
-import java.util.Random;
 
 public class ThingBuilder {
-    private static Random rand = new Random();
-    private static int v_i = 2;
+    private static int initialParticleVelocity = Constants.initialParticleVelocity;
 
-    public static Mover newMover(Vector2D location, int heading){
-        Mover newMover = new Mover(location, 0);
-        newMover.setDensity(200);
-        newMover.setRadius(1);
-        newMover.setVelocity(new Vector2D(randSign() * rand.nextDouble() * v_i, randSign() * rand.nextDouble() * v_i));
-        return newMover;
+    public static Particle newParticle(Vector2D location, int heading){
+        Particle newParticle = new Particle(location, 0);
+        newParticle.setDensity(Constants.particleDensity);
+        newParticle.setRadius(Constants.particleRadius);
+        newParticle.setVelocity(Vector2D.newRandom(-initialParticleVelocity, initialParticleVelocity));
+        return newParticle;
     }
 
-    public static Spawner newSpawner(Vector2D location, ArrayList<Mover> particles) {
-        Spawner newSpawner = new Spawner(location, particles);
-        newSpawner.setDensity(0.0000001);
-        newSpawner.setRadius(4);
+    public static Spawner newSpawner(ArrayList<Particle> particles) {
+        Spawner newSpawner = new Spawner(Vector2D.newRandom(0, Constants.windowWidth, 0, Constants.windowHeight), particles);
+        newSpawner.setDensity(Constants.spawnerDensity);
+        newSpawner.setRadius(Constants.spawnerRadius);
         return newSpawner;
     }
 
-    private static int randSign(){
-        if(rand.nextBoolean()){
-            return 1;
-        }
-        return -1;
+    public static Spawner newSpawner(Vector2D location, ArrayList<Particle> particles) {
+        Spawner newSpawner = new Spawner(location, particles);
+        newSpawner.setDensity(Constants.spawnerDensity);
+        newSpawner.setRadius(Constants.spawnerRadius);
+        return newSpawner;
     }
+
+    public static Feature newFeature() {
+        Feature newFeature = new Feature(Vector2D.newRandom(0, Constants.windowWidth, 0, Constants.windowHeight));
+        double randSign = (Math.random() * 2) - 1;
+        newFeature.setDensity(randSign * Constants.featureDensity);
+        newFeature.setRadius(Constants.featureRadius);
+        return newFeature;
+    }
+
+    public static Feature newFeature(Vector2D location) {
+        Feature newFeature = new Feature(location);
+        double randSign = (Math.random() * 2) - 1;
+        newFeature.setDensity(randSign * Constants.featureDensity);
+        newFeature.setRadius(Constants.featureRadius);
+        return newFeature;
+    }
+
 }

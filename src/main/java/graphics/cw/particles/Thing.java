@@ -13,7 +13,6 @@ public class Thing {
 
     public Thing(Vector2D location) {
         this.location = location;
-
         density = 1;
         radius = 10;
         calcMass();
@@ -27,7 +26,7 @@ public class Thing {
       this.location = location;
     }
 
-  private void calcMass(){
+    private void calcMass(){
         mass = density * Math.PI * radius * radius;
     }
 
@@ -58,7 +57,6 @@ public class Thing {
     }
 
     public void update(){
+
     }
-
-
 }

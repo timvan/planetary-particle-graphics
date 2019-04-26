@@ -19,13 +19,16 @@ public class ParticleMouseHandler {
       if(thing.isInside(mouseX, mouseY)){ thingClicked = thing; }
     }
   }
+
   public void mouseReleased(int mouseX, int mouseY) {
     thingClicked = null;
 
   }
+
   public void mouseDragged(int mouseX, int mouseY) {
     if(thingClicked != null) {
       thingClicked.setLocation(new Vector2D(mouseX, mouseY));
     }
   };
+
 }

@@ -8,12 +8,12 @@ import graphics.cw.particles.*;
 import processing.core.PApplet;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 public class App extends PApplet {
 
-    int width = 900;
-    int height = 700;
+    int width = Constants.windowWidth;
+    int height = Constants.windowHeight;
+
     Grid grid = new Grid(width, height);
     Display display = new Display(this);
     ParticleSystem ps = new ParticleSystem(grid);
@@ -36,15 +36,15 @@ public class App extends PApplet {
         rect(0, 0, width, height);
         ps.update();
 
-        for(Mover mover : ps.getParticles()){
-            display.drawCircle(mover.getLocation(), mover.getRadius(), Color.WHITE);
+        for(Particle particle : ps.getParticles()){
+            display.drawCircle(particle.getLocation(), particle.getRadius(), Color.WHITE);
         }
 
-        for(Sink sink : ps.getFeatures()){
-            if(sink.getMass() < 0){
-                display.drawCircle(sink.getLocation(), sink.getRadius(), Color.YELLOW);
+        for(Feature feature : ps.getFeatures()){
+            if(feature.getMass() < 0){
+                display.drawCircle(feature.getLocation(), feature.getRadius(), Color.YELLOW);
             } else {
-                display.drawCircle(sink.getLocation(), sink.getRadius(), Color.RED);
+                display.drawCircle(feature.getLocation(), feature.getRadius(), Color.RED);
             }
 
         }

@@ -1,70 +1,51 @@
 package graphics.cw.particles;
 
+import graphics.cw.Constants;
+
 import java.util.ArrayList;
-import java.util.Random;
 
 public class ParticleSystem {
 
-    Random rand;
+    private int nParticles = Constants.startingParticles;
+    private int nFeatures = Constants.startingFeatures;
+    private int nSpawners = Constants.startingSpawners;
 
-    private int n_particles;
-    private int n_sinks;
-    private int n_spawners;
-
-    private ArrayList<Mover> particles;
-    private ArrayList<Sink> features;
-    private ArrayList<Spawner> spawners;
+    private ArrayList<Particle> particles = new ArrayList<>();
+    private ArrayList<Feature> features = new ArrayList<>();
+    private ArrayList<Spawner> spawners = new ArrayList<>();
 
     Grid grid;
 
     public ParticleSystem(Grid grid) {
 
         this.grid = grid;
-
-        particles = new ArrayList<>();
-        features = new ArrayList<>();
-        spawners = new ArrayList<>();
-
-        n_particles = 10;
-        n_sinks = 10;
-        n_spawners = 2;
-
-        rand = new Random();
     }
 
     public void setup(){
 
-        for(int i = 0; i < n_particles; i++) {
-            Mover particle = ThingBuilder.newMover(
-                    new Vector2D(rand.nextDouble() * grid.getWidth(), rand.nextDouble() * grid.getHeight()), 0);
+        for(int i = 0; i < nParticles; i++) {
+            Particle particle = ThingBuilder.newParticle(
+                    Vector2D.newRandom(0, grid.getWidth(), 0, grid.getHeight()),
+                    0
+            );
             particles.add(particle);
         }
 
-        for(int i = 0; i < n_sinks; i++) {
-            int nextSign = rand.nextBoolean() == true ? 1 : -1;
-
-            Sink newSink = new Sink(new Vector2D(rand.nextDouble() * grid.getWidth(),
-                    rand.nextDouble() * grid.getHeight()));
-
-            newSink.setDensity(nextSign * 1);
-            newSink.setRadius(5);
-
-            features.add(newSink);
+        for(int i = 0; i < nFeatures; i++) {
+            Feature newFeature = ThingBuilder.newFeature();
+            features.add(newFeature);
         }
 
-        for(int i = 0; i < n_spawners; i++) {
-            Spawner newSpawner = ThingBuilder.newSpawner(new Vector2D(rand.nextDouble() * grid.getWidth(),
-                    rand.nextDouble() * grid.getHeight()),
-                    particles
-            );
+        for(int i = 0; i < nSpawners; i++) {
+            Spawner newSpawner = ThingBuilder.newSpawner(particles);
             spawners.add(newSpawner);
         }
 
     }
 
     public void update() {
-        for(Mover particle: particles){
-            for(Sink feature: features) {
+        for(Particle particle: particles){
+            for(Feature feature: features) {
                 Vector2D gForce = Physics.calculateGravitationalAttraction(feature, particle);
                 particle.applyForce(gForce);
             }
@@ -76,11 +57,11 @@ public class ParticleSystem {
         }
     }
 
-    public ArrayList<Mover> getParticles() {
+    public ArrayList<Particle> getParticles() {
         return particles;
     }
 
-    public ArrayList<Sink> getFeatures() {
+    public ArrayList<Feature> getFeatures() {
         return features;
     }
 

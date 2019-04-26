@@ -2,7 +2,7 @@ package graphics.cw.particles;
 
 import processing.core.PVector;
 
-public class Mover extends Thing {
+public class Particle extends Thing {
 
     private Vector2D velocity;
     private Vector2D acceleration;
@@ -16,7 +16,7 @@ public class Mover extends Thing {
     private double maxForce;
 
 
-    public Mover(Vector2D location, double heading) {
+    public Particle(Vector2D location, double heading) {
         super(location);
         this.heading = heading;
 

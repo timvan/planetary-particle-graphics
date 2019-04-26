@@ -1,5 +1,7 @@
 package graphics.cw.particles;
 
+import sun.nio.cs.ext.MacHebrew;
+
 public class Vector2D {
 
     private double x;
@@ -10,30 +12,12 @@ public class Vector2D {
         y = y_;
     }
 
-    public void setAll(Vector2D new_vect){
-        x = new_vect.getX();
-        y = new_vect.getY();
-    }
-
-    public void setX(double x){
-        this.x = x;
-    }
-
-    public void setY(double y){
-        this.y = y;
-    }
-
     public double getX(){
         return this.x;
     }
 
     public double getY(){
         return this.y;
-    }
-
-    public void setXY(double x, double y){
-        this.x = x;
-        this.y = y;
     }
 
     public void add(Vector2D v) {
@@ -67,7 +51,6 @@ public class Vector2D {
     }
 
     public void div(double n) {
-
         if(n != 0){
             x = x / n;
             y = y / n;
@@ -75,22 +58,14 @@ public class Vector2D {
     }
 
     public static Vector2D div(Vector2D v1, double n) {
-		/*	if(n == 0 || n == 0){
-			 NEED TO RAISE EXCEPTION << check for zero divide <<<<<<<<<
-			return;
-		}*/
-        Vector2D v2 = new Vector2D (v1.x / n, v1.y / n);
-        return v2;
+		if(n == 0){
+		    throw new Error("Cannot devide by zero");
+		}
+        return new Vector2D (v1.x / n, v1.y / n);
     }
-
 
     public double mag() {
         return Math.sqrt(x * x  + y * y);
-    }
-
-    void setMag(double m) {
-        normalise();
-        mult(m);
     }
 
     public void normalise() {
@@ -98,6 +73,11 @@ public class Vector2D {
         if (m != 0) {
             div(m);
         }
+    }
+
+    void setMag(double m) {
+        normalise();
+        mult(m);
     }
 
     public Vector2D unit() {
@@ -118,10 +98,32 @@ public class Vector2D {
         return Math.atan2(y, x);
     }
 
-
-    void random2D() {
+    void randomiseUnit() {
         x = Math.random();
         y = Math.random();
+    }
+
+    public static Vector2D newRandom(){
+        Vector2D randomVector = new Vector2D(1, 1);
+        randomVector.randomiseUnit();
+        return randomVector;
+    }
+
+    public static Vector2D newRandom(int min, int max) {
+        int dif = max - min;
+        return new Vector2D(
+                min + Math.random() * dif,
+                min + Math.random() * dif
+        );
+    }
+
+    public static Vector2D newRandom(int minX, int maxX, int minY, int maxY) {
+        int difX = maxX - minX;
+        int difY = maxY - minY;
+        return new Vector2D(
+                minX + Math.random() * difX,
+                minY + Math.random() * difY
+        );
     }
 
     void lerp(Vector2D v, double i){

@@ -1,8 +1,8 @@
 package graphics.cw.particles;
 
-public class Sink extends Thing {
+public class Feature extends Thing {
 
-    public Sink(Vector2D location) {
+    public Feature(Vector2D location) {
         super(location);
     }
 
