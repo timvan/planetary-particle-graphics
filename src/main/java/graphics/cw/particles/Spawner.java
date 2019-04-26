@@ -7,14 +7,12 @@ public class Spawner extends Thing {
     ArrayList<Particle> particles;
     int counter;
     int rate;
-    boolean isOn;
 
     public Spawner(Vector2D location, ArrayList<Particle> particles) {
         super(location);
         this.particles = particles;
         counter = 0;
         rate = 10;
-        isOn = true;
     }
 
     public void generate() {
@@ -24,14 +22,11 @@ public class Spawner extends Thing {
 
     @Override
     public void update() {
-        if(counter % rate == 0 && isOn) {
+        if(counter % rate == 0 && this.isOn()) {
             this.generate();
             counter = 0;
         }
         counter++;
     }
 
-    public void setOn(boolean on) {
-        isOn = on;
-    }
 }

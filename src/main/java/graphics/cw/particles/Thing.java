@@ -11,12 +11,16 @@ public class Thing {
     private double density;
     private double radius;
 
+    private boolean on = true;
+
     public Thing(Vector2D location) {
         this.location = location;
         density = 1;
         radius = 10;
         calcMass();
     }
+
+    public void update(){ }
 
     public Vector2D getLocation() {
         return location;
@@ -34,9 +38,13 @@ public class Thing {
         return mass;
     }
 
+    public double getDensity() {
+        return density;
+    }
+
     public void setDensity(double density) {
         this.density = density;
-        calcMass();
+        this.calcMass();
     }
 
     public double getRadius() {
@@ -45,6 +53,7 @@ public class Thing {
 
     public void setRadius(double radius) {
         this.radius = radius;
+        this.calcMass();
     }
 
     public boolean isInside(int x, int y) {
@@ -56,7 +65,11 @@ public class Thing {
         return false;
     }
 
-    public void update(){
+    public boolean isOn() {
+        return on;
+    }
 
+    public void setOn(boolean on) {
+        this.on = on;
     }
 }

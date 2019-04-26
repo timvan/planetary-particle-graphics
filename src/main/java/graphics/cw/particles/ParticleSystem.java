@@ -17,17 +17,13 @@ public class ParticleSystem {
     Grid grid;
 
     public ParticleSystem(Grid grid) {
-
         this.grid = grid;
     }
 
     public void setup(){
 
         for(int i = 0; i < nParticles; i++) {
-            Particle particle = ThingBuilder.newParticle(
-                    Vector2D.newRandom(0, grid.getWidth(), 0, grid.getHeight()),
-                    0
-            );
+            Particle particle = ThingBuilder.newParticle();
             particles.add(particle);
         }
 
@@ -67,5 +63,15 @@ public class ParticleSystem {
 
     public ArrayList<Spawner> getSpawners() {
         return spawners;
+    }
+
+    public void newSpawner(int mouseX, int mouseY){
+        Spawner newSpawner = ThingBuilder.newSpawner(new Vector2D(mouseX, mouseY), particles);
+        spawners.add(newSpawner);
+    }
+
+    public void newFeature(int mouseX, int mouseY, boolean gravityPulling){
+        Feature newFeature = ThingBuilder.newFeature(new Vector2D(mouseX, mouseY), gravityPulling);
+        features.add(newFeature);
     }
 }

@@ -66,6 +66,10 @@ public class App extends PApplet {
         particleMouseHandler.mouseDragged(mouseX, mouseY);
     }
 
+    public void keyPressed() {
+        particleMouseHandler.keyPressed(key, mouseX, mouseY);
+    }
+
     public static void main(String[] passedArgs) {
         String[] appletArgs = new String[] {
                 "graphics.cw.App"

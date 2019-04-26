@@ -27,4 +27,8 @@ public class Constants {
 
     public static final int windowHeight = 500;
 
+    public static final int maxSpeed = 3;
+
+    public static final int maxAngSpeed = 3;
+
 }

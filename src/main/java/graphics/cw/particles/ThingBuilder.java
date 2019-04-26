@@ -1,12 +1,19 @@
 package graphics.cw.particles;
 
-import com.sun.tools.internal.jxc.ap.Const;
 import graphics.cw.Constants;
 
 import java.util.ArrayList;
 
 public class ThingBuilder {
     private static int initialParticleVelocity = Constants.initialParticleVelocity;
+
+    public static Particle newParticle(){
+        Particle newParticle = new Particle(Vector2D.newRandom(0, Constants.windowWidth, 0, Constants.windowHeight), 0);
+        newParticle.setDensity(Constants.particleDensity);
+        newParticle.setRadius(Constants.particleRadius);
+        newParticle.setVelocity(Vector2D.newRandom(-initialParticleVelocity, initialParticleVelocity));
+        return newParticle;
+    }
 
     public static Particle newParticle(Vector2D location, int heading){
         Particle newParticle = new Particle(location, 0);
@@ -45,5 +52,16 @@ public class ThingBuilder {
         newFeature.setRadius(Constants.featureRadius);
         return newFeature;
     }
+
+    public static Feature newFeature(Vector2D location, boolean gravityPulling) {
+        Feature newFeature = new Feature(location);
+        int sign = -1;
+        if (gravityPulling) sign = 1;
+
+        newFeature.setDensity(sign * Constants.featureDensity);
+        newFeature.setRadius(Constants.featureRadius);
+        return newFeature;
+    }
+
 
 }

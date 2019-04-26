@@ -1,5 +1,6 @@
 package graphics.cw.particles;
 
+import graphics.cw.Constants;
 import processing.core.PVector;
 
 public class Particle extends Thing {
@@ -26,8 +27,8 @@ public class Particle extends Thing {
         aVelocity = 0;
         aAcceleration = 0;
 
-        maxSpeed = 6;
-        maxAngSpeed = 10;
+        maxSpeed = Constants.maxSpeed;
+        maxAngSpeed = Constants.maxAngSpeed;
 
     }
 
@@ -53,7 +54,6 @@ public class Particle extends Thing {
         aAcceleration = 0;
 
     }
-
 
     public void applyForce(Vector2D force) {
         Vector2D f = Vector2D.div(force, this.getMass());
