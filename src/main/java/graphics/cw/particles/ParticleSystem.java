@@ -9,9 +9,11 @@ public class ParticleSystem {
 
     private int n_particles;
     private int n_sinks;
+    private int n_spawners;
 
     private ArrayList<Mover> particles;
     private ArrayList<Sink> features;
+    private ArrayList<Spawner> spawners;
 
     Grid grid;
 
@@ -21,9 +23,11 @@ public class ParticleSystem {
 
         particles = new ArrayList<>();
         features = new ArrayList<>();
+        spawners = new ArrayList<>();
 
-        n_particles = 1000;
-        n_sinks = 4;
+        n_particles = 10;
+        n_sinks = 10;
+        n_spawners = 2;
 
         rand = new Random();
     }
@@ -37,12 +41,25 @@ public class ParticleSystem {
         }
 
         for(int i = 0; i < n_sinks; i++) {
+            int nextSign = rand.nextBoolean() == true ? 1 : -1;
 
-            Sink newSink = new Sink(new Vector2D(rand.nextDouble() * grid.getWidth(),rand.nextDouble() * grid.getHeight()));
-            newSink.setDensity(100);
+            Sink newSink = new Sink(new Vector2D(rand.nextDouble() * grid.getWidth(),
+                    rand.nextDouble() * grid.getHeight()));
+
+            newSink.setDensity(nextSign * 1);
             newSink.setRadius(5);
+
             features.add(newSink);
         }
+
+        for(int i = 0; i < n_spawners; i++) {
+            Spawner newSpawner = ThingBuilder.newSpawner(new Vector2D(rand.nextDouble() * grid.getWidth(),
+                    rand.nextDouble() * grid.getHeight()),
+                    particles
+            );
+            spawners.add(newSpawner);
+        }
+
     }
 
     public void update() {
@@ -54,6 +71,9 @@ public class ParticleSystem {
 
             particle.update();
         }
+        for(Spawner spawner: spawners){
+            spawner.update();
+        }
     }
 
     public ArrayList<Mover> getParticles() {
@@ -64,4 +84,7 @@ public class ParticleSystem {
         return features;
     }
 
+    public ArrayList<Spawner> getSpawners() {
+        return spawners;
+    }
 }

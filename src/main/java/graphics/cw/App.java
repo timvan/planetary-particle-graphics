@@ -17,21 +17,20 @@ public class App extends PApplet {
     Grid grid = new Grid(width, height);
     Display display = new Display(this);
     ParticleSystem ps = new ParticleSystem(grid);
+    ParticleMouseHandler particleMouseHandler = new ParticleMouseHandler(ps);
 
     public void settings() {
         size(width, height, "processing.awt.PGraphicsJava2D");
     }
 
-    public void setup(){
+    public void setup() {
         this.smooth();
         background(Color.BLACK.getRGB());
         ps.setup();
-
     }
 
     public void draw() {
-        //
-        fill(Color.BLACK.getRGB(), (float) 10);
+        fill(Color.BLACK.getRGB(), (float) 50);
         translate(0, 0);
         rectMode(1);
         rect(0, 0, width, height);
@@ -42,11 +41,30 @@ public class App extends PApplet {
         }
 
         for(Sink sink : ps.getFeatures()){
-            display.drawCircle(sink.getLocation(), sink.getRadius(), Color.YELLOW);
+            if(sink.getMass() < 0){
+                display.drawCircle(sink.getLocation(), sink.getRadius(), Color.YELLOW);
+            } else {
+                display.drawCircle(sink.getLocation(), sink.getRadius(), Color.RED);
+            }
+
         }
 
+        for(Spawner spawner : ps.getSpawners()){
+            display.drawCircle(spawner.getLocation(), spawner.getRadius(), Color.BLUE);
+        }
     }
 
+    public void mousePressed() {
+        particleMouseHandler.mousePressed(mouseX, mouseY);
+    }
+
+    public void mouseReleased() {
+        particleMouseHandler.mouseReleased(mouseX, mouseY);
+    }
+
+    public void mouseDragged() {
+        particleMouseHandler.mouseDragged(mouseX, mouseY);
+    }
 
     public static void main(String[] passedArgs) {
         String[] appletArgs = new String[] {
