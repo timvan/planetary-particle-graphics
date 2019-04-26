@@ -74,4 +74,37 @@ public class ParticleSystem {
         Feature newFeature = ThingBuilder.newFeature(new Vector2D(mouseX, mouseY), gravityPulling);
         features.add(newFeature);
     }
+
+    public Thing getThing(int mouseX, int mouseY){
+        for(Feature feature : features) {
+            if(feature.isInside(mouseX, mouseY)){ return feature; }
+        }
+        for(Spawner spawner : spawners) {
+            if(spawner.isInside(mouseX, mouseY)){ return spawner; }
+        }
+        return null;
+    }
+
+    public void deleteThing(int mouseX, int mouseY){
+        for(int i = 0; i < features.size(); i ++) {
+            if(features.get(i).isInside(mouseX, mouseY)){
+                features.remove(i);
+            }
+        }
+        for(int i = 0; i < spawners.size(); i ++) {
+            if(spawners.get(i).isInside(mouseX, mouseY)){
+                spawners.remove(i);
+            }
+        }
+    }
+
+    public void clearParticles(){
+        particles.clear();
+    }
+
+    public void clearAll() {
+        particles.clear();
+        spawners.clear();
+        features.clear();
+    }
 }

@@ -12,18 +12,8 @@ public class ParticleMouseHandler {
     this.ps = ps;
   }
 
-  private Thing getThing(int mouseX, int mouseY) {
-    for(Feature feature : ps.getFeatures()) {
-      if(feature.isInside(mouseX, mouseY)){ return feature; }
-    }
-    for(Spawner spawner : ps.getSpawners()) {
-      if(spawner.isInside(mouseX, mouseY)){ return spawner; }
-    }
-    return null;
-  }
-
   public void mousePressed(int mouseX, int mouseY) {
-    thingClicked = this.getThing(mouseX, mouseY);
+    thingClicked = ps.getThing(mouseX, mouseY);
   }
 
   public void mouseReleased(int mouseX, int mouseY) {
@@ -45,7 +35,7 @@ public class ParticleMouseHandler {
 
   public void keyPressed(int key, int mouseX, int mouseY) {
 
-    Thing thing = this.getThing(mouseX, mouseY);
+    Thing thing = ps.getThing(mouseX, mouseY);
 
     if(key == '+' || key == '=') {
       if(thing != null) {
@@ -53,28 +43,24 @@ public class ParticleMouseHandler {
         System.out.println("enlarge");
       }
     }
-
     if(key == '-' || key == '_') {
       if(thing != null) {
         thing.setRadius(thing.getRadius() * 0.8);
         System.out.println("shrink");
       }
     }
-
     if(key == ']' || key == '}') {
       if(thing != null) {
         thing.setDensity(thing.getDensity() * 1.2);
         System.out.println("enlarge");
       }
     }
-
     if(key == '[' || key == '{') {
       if(thing != null) {
         thing.setDensity(thing.getDensity() * 0.8);
         System.out.println("shrink");
       }
     }
-
     if(key == '1') {
       ps.newSpawner(mouseX, mouseY);
     }
@@ -84,13 +70,14 @@ public class ParticleMouseHandler {
     if(key == '3') {
       ps.newFeature(mouseX, mouseY, false);
     }
-
     if(key == 'x') {
-
+      ps.deleteThing(mouseX, mouseY);
     }
     if(key == 'r') {
-
+      ps.clearParticles();
+    }
+    if(key == 'c') {
+      ps.clearAll();
     }
   }
-
 }

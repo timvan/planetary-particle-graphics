@@ -23,9 +23,9 @@ public class Constants {
 
     public static final int startingSpawners = 1;
 
-    public static final int windowWidth = 500;
+    public static final int windowWidth = 1000;
 
-    public static final int windowHeight = 500;
+    public static final int windowHeight = 1000;
 
     public static final int maxSpeed = 3;
 
