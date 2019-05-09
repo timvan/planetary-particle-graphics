@@ -2,7 +2,7 @@ package graphics.cw.particles;
 
 import java.util.Vector;
 
-public class Thing {
+public abstract class Thing {
 
     private Vector2D location;
 

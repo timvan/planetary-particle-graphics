@@ -13,6 +13,7 @@ public class ParticleSystem {
     private ArrayList<Particle> particles = new ArrayList<>();
     private ArrayList<Feature> features = new ArrayList<>();
     private ArrayList<Spawner> spawners = new ArrayList<>();
+    private Goal goal;
 
     Grid grid;
 
@@ -37,6 +38,8 @@ public class ParticleSystem {
             spawners.add(newSpawner);
         }
 
+        goal = ThingBuilder.newGoal();
+
     }
 
     public void update() {
@@ -51,6 +54,10 @@ public class ParticleSystem {
         for(Spawner spawner: spawners){
             spawner.update();
         }
+    }
+
+    public Goal getGoal() {
+        return goal;
     }
 
     public ArrayList<Particle> getParticles() {
@@ -82,6 +89,8 @@ public class ParticleSystem {
         for(Spawner spawner : spawners) {
             if(spawner.isInside(mouseX, mouseY)){ return spawner; }
         }
+
+        if(goal.isInside(mouseX, mouseY)){ return goal; }
         return null;
     }
 
@@ -89,11 +98,13 @@ public class ParticleSystem {
         for(int i = 0; i < features.size(); i ++) {
             if(features.get(i).isInside(mouseX, mouseY)){
                 features.remove(i);
+                return;
             }
         }
         for(int i = 0; i < spawners.size(); i ++) {
             if(spawners.get(i).isInside(mouseX, mouseY)){
                 spawners.remove(i);
+                return;
             }
         }
     }

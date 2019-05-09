@@ -1,5 +1,7 @@
 package graphics.cw.particles;
 
+import graphics.cw.Constants;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -39,26 +41,22 @@ public class ParticleMouseHandler {
 
     if(key == '+' || key == '=') {
       if(thing != null) {
-        thing.setRadius(thing.getRadius() * 1.2);
-        System.out.println("enlarge");
+        thing.setRadius(thing.getRadius() * (1 + Constants.growthRate));
       }
     }
     if(key == '-' || key == '_') {
       if(thing != null) {
-        thing.setRadius(thing.getRadius() * 0.8);
-        System.out.println("shrink");
+        thing.setRadius(thing.getRadius() * (1 - Constants.growthRate));
       }
     }
     if(key == ']' || key == '}') {
       if(thing != null) {
-        thing.setDensity(thing.getDensity() * 1.2);
-        System.out.println("enlarge");
+        thing.setDensity(thing.getDensity() * (1 + Constants.growthRate));
       }
     }
     if(key == '[' || key == '{') {
       if(thing != null) {
-        thing.setDensity(thing.getDensity() * 0.8);
-        System.out.println("shrink");
+        thing.setDensity(thing.getDensity() * (1 - Constants.growthRate));
       }
     }
     if(key == '1') {
@@ -70,13 +68,13 @@ public class ParticleMouseHandler {
     if(key == '3') {
       ps.newFeature(mouseX, mouseY, false);
     }
-    if(key == 'x') {
+    if(key == 'x' || key == 'X') {
       ps.deleteThing(mouseX, mouseY);
     }
-    if(key == 'r') {
+    if(key == 'r' || key == 'R') {
       ps.clearParticles();
     }
-    if(key == 'c') {
+    if(key == 'c' || key == 'C') {
       ps.clearAll();
     }
   }

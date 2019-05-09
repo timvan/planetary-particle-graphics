@@ -63,5 +63,12 @@ public class ThingBuilder {
         return newFeature;
     }
 
+    public static Goal newGoal() {
+        Goal newGoal = new Goal(Vector2D.newRandom(0, Constants.windowWidth, 0, Constants.windowHeight));
+        newGoal.setDensity(Constants.spawnerDensity * -1);
+        newGoal.setRadius(Constants.spawnerRadius);
+        return newGoal;
+    }
+
 
 }

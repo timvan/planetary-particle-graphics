@@ -1,5 +1,7 @@
 package graphics.cw.particles;
 
+import graphics.cw.Constants;
+
 import java.util.ArrayList;
 
 public class Spawner extends Thing {
@@ -16,6 +18,9 @@ public class Spawner extends Thing {
     }
 
     public void generate() {
+        if(particles.size() > Constants.maxParticles){
+            particles.remove(0);
+        }
         Particle newParticle = ThingBuilder.newParticle(this.getLocation().copy(), 0);
         particles.add(newParticle);
     }

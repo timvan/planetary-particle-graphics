@@ -23,12 +23,16 @@ public class Constants {
 
     public static final int startingSpawners = 1;
 
-    public static final int windowWidth = 300;
+    public static final int windowWidth = 800;
 
-    public static final int windowHeight = 300;
+    public static final int windowHeight = 800;
 
-    public static final int maxSpeed = 3;
+    public static final int maxSpeed = 6;
 
     public static final int maxAngSpeed = 3;
+
+    public static final double growthRate = 0.2;
+
+    public static final int maxParticles = 5000;
 
 }

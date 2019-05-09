@@ -4,10 +4,9 @@
 package graphics.cw;
 
 import graphics.cw.display.Display;
-import graphics.cw.display.InfoBox;
+import graphics.cw.display.Info;
 import graphics.cw.particles.*;
 import processing.core.PApplet;
-import processing.core.PFont;
 
 import java.awt.*;
 
@@ -20,7 +19,7 @@ public class App extends PApplet {
     Display display;
     ParticleSystem ps;
     ParticleMouseHandler particleMouseHandler;
-    InfoBox infoBox;
+    Info info;
 
     public void settings() {
         size(width, height, "processing.awt.PGraphicsJava2D");
@@ -31,8 +30,7 @@ public class App extends PApplet {
         display = new Display(this);
         ps = new ParticleSystem(grid);
         particleMouseHandler = new ParticleMouseHandler(ps);
-        infoBox = new InfoBox(display);
-
+        info = new Info(display, 100, 100);
         this.smooth();
         background(Color.BLACK.getRGB());
         ps.setup();
@@ -62,7 +60,12 @@ public class App extends PApplet {
             display.drawCircle(spawner.getLocation(), spawner.getRadius(), Color.BLUE);
         }
 
-        infoBox.draw();
+        Goal goal = ps.getGoal();
+        display.drawCircle(goal.getLocation(), goal.getRadius(), Color.MAGENTA);
+
+        info.update(mouseX, mouseY);
+        info.display();
+
     }
 
     public void mousePressed() {
