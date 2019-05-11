@@ -3,33 +3,24 @@ package graphics.cw.particles;
 import graphics.cw.Constants;
 import processing.core.PVector;
 
+/***
+ * Particles are moving Things
+ * Particles move using Newtonian mechanics, where forces are applied to it
+ */
 public class Particle extends Thing {
 
     private Vector2D velocity;
     private Vector2D acceleration;
 
-    private double heading;
-    private double aVelocity;
-    private double aAcceleration;
-
     private double maxSpeed;
-    private double maxAngSpeed;
-    private double maxForce;
 
-
-    public Particle(Vector2D location, double heading) {
+    public Particle(Vector2D location) {
         super(location);
-        this.heading = heading;
 
         velocity = new Vector2D(0, 0);
         acceleration = new Vector2D(0, 0);
 
-        aVelocity = 0;
-        aAcceleration = 0;
-
         maxSpeed = Constants.maxSpeed;
-        maxAngSpeed = Constants.maxAngSpeed;
-
     }
 
     public void setVelocity(Vector2D velocity) {
@@ -45,14 +36,6 @@ public class Particle extends Thing {
         Vector2D location = this.getLocation();
         location.add(velocity);
         acceleration.mult(0);
-
-        aVelocity += (aAcceleration);
-        if(aVelocity >= maxAngSpeed) aVelocity = maxAngSpeed;
-        if (aVelocity <= -maxAngSpeed) aVelocity = -maxAngSpeed;
-
-        this.heading += (aVelocity);
-        aAcceleration = 0;
-
     }
 
     public void applyForce(Vector2D force) {
@@ -60,10 +43,7 @@ public class Particle extends Thing {
         acceleration.add(f);
     }
 
-    public void applyRelativeForce(Vector2D force, double heading) {
-        Vector2D relForce = new Vector2D(force.mag() * Math.cos(force.heading() + heading),
-                force.mag() * Math.sin(force.heading() + heading));
-        applyForce(relForce);
+    public void setMaxSpeed(double maxSpeed) {
+        this.maxSpeed = maxSpeed;
     }
-
 }

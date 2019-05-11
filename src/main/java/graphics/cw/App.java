@@ -3,73 +3,111 @@
  */
 package graphics.cw;
 
+import com.sun.xml.internal.xsom.impl.Const;
+import graphics.cw.display.ColorPalette;
 import graphics.cw.display.Display;
-import graphics.cw.display.Info;
+import graphics.cw.display.RGB;
+import graphics.cw.gui.InfoButton.Info;
+import graphics.cw.gui.Slider.Slider;
 import graphics.cw.particles.*;
 import processing.core.PApplet;
 
-import java.awt.*;
-
+/***
+ * Main app
+ * Creates a particle system
+ */
 public class App extends PApplet {
 
-    int width = Constants.windowWidth;
-    int height = Constants.windowHeight;
+    private int width = Constants.windowWidth;
+    private int height = Constants.windowHeight;
 
-    Grid grid;
-    Display display;
-    ParticleSystem ps;
-    ParticleMouseHandler particleMouseHandler;
-    Info info;
+    private Display display;
+    private ParticleSystem ps;
+    private ParticleMouseHandler particleMouseHandler;
+    private Info info;
+    private int infoPosX = 60;
+    private int infoPosY = 60;
+    private RGB particleColor = ColorPalette.particle;
+    private RGB spawnerColor = ColorPalette.spawner;
+    private RGB neagtiveFeatureColor = ColorPalette.neagtiveFeature;
+    private RGB postiveFeatureColor = ColorPalette.postiveFeature;
+
+    private Slider maxSpeedSlider;
+    private Slider spawnRateSlider;
+    double vOld;
+    double vNew;
 
     public void settings() {
         size(width, height, "processing.awt.PGraphicsJava2D");
     }
 
-    public void setup() {
-        grid = new Grid(width, height);
+    public void setup() { ;
         display = new Display(this);
-        ps = new ParticleSystem(grid);
+        ps = new ParticleSystem();
         particleMouseHandler = new ParticleMouseHandler(ps);
-        info = new Info(display, 100, 100);
+        info = new Info(display, infoPosX, infoPosY);
         this.smooth();
-        background(Color.BLACK.getRGB());
         ps.setup();
+        maxSpeedSlider = new Slider(50, height - 50);
+        spawnRateSlider = new Slider(50, height - 80);
+
+        vOld = maxSpeedSlider.getValue();
     }
 
     public void draw() {
-        fill(Color.BLACK.getRGB(), (float) 50);
-        translate(0, 0);
-        rectMode(1);
-        rect(0, 0, width, height);
+        // UPDATE stuff
         ps.update();
+        info.handleMouse(mouseX, mouseY);
+        display.drawBackground(width, height);
 
+        updateMaxSpeedSlider();
+        updateSpawnRateSlider();
+
+        // draw stuff
         for(Particle particle : ps.getParticles()){
-            display.drawCircle(particle.getLocation(), particle.getRadius(), Color.WHITE);
+            display.drawCircle(particle.getLocation(), particle.getRadius(), particleColor, 190);
         }
 
         for(Feature feature : ps.getFeatures()){
             if(feature.getMass() < 0){
-                display.drawCircle(feature.getLocation(), feature.getRadius(), Color.YELLOW);
+                display.drawCircle(feature.getLocation(), feature.getRadius(), neagtiveFeatureColor);
             } else {
-                display.drawCircle(feature.getLocation(), feature.getRadius(), Color.RED);
+                display.drawCircle(feature.getLocation(), feature.getRadius(), postiveFeatureColor);
             }
 
         }
 
         for(Spawner spawner : ps.getSpawners()){
-            display.drawCircle(spawner.getLocation(), spawner.getRadius(), Color.BLUE);
+            display.drawCircle(spawner.getLocation(), spawner.getRadius(), spawnerColor);
         }
 
-        Goal goal = ps.getGoal();
-        display.drawCircle(goal.getLocation(), goal.getRadius(), Color.MAGENTA);
+        maxSpeedSlider.draw(display);
+        spawnRateSlider.draw(display);
+        info.draw();
+    }
 
-        info.update(mouseX, mouseY);
-        info.display();
+    public void updateMaxSpeedSlider(){
+        if(maxSpeedSlider.hasChanged()){
+            vNew = maxSpeedSlider.getValue();
+            ps.setParticlesMaxSpeed(vNew * Constants.maxSpeed);
+            ThingBuilder.setParticleInitialVelcotiy((int) Math.round(vNew * Constants.maxSpeed));
+            if(vNew < 0.001) {
+                ps.setSpawnRate(0);
+            }
+        }
+    }
 
+    public void updateSpawnRateSlider(){
+        if(spawnRateSlider.hasChanged()){
+            int newRate = (int) Math.round(spawnRateSlider.getValue() * Constants.spawnRate);
+            ps.setSpawnRate(newRate);
+        }
     }
 
     public void mousePressed() {
         particleMouseHandler.mousePressed(mouseX, mouseY);
+        maxSpeedSlider.handleMousePressed(mouseX, mouseY);
+        spawnRateSlider.handleMousePressed(mouseX, mouseY);
     }
 
     public void mouseReleased() {
@@ -78,9 +116,11 @@ public class App extends PApplet {
 
     public void mouseDragged() {
         particleMouseHandler.mouseDragged(mouseX, mouseY);
+        maxSpeedSlider.handleMouseDragged(mouseX, mouseY);
+        spawnRateSlider.handleMousePressed(mouseX, mouseY);
     }
 
-    public void keyPressed() {
+    public void keyPressed(){
         particleMouseHandler.keyPressed(key, mouseX, mouseY);
     }
 

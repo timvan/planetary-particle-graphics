@@ -1,13 +1,15 @@
 package graphics.cw.particles;
 
-import java.util.Vector;
-
-public abstract class Thing {
+/***
+ * A Thing is a circular object that exists in the world
+ * It has world properties of location, mass, radius and density
+ * If density or radius is changed, mass is recalculated
+ * Things can be on or off which can change it's functioanility
+ */
+public class Thing {
 
     private Vector2D location;
-
     private double mass;
-
     private double density;
     private double radius;
 
@@ -22,16 +24,27 @@ public abstract class Thing {
 
     public void update(){ }
 
+    public boolean isInside(int x, int y) {
+        Vector2D point = new Vector2D(x, y);
+        Vector2D dist = Vector2D.sub(location, point);
+        if(dist.mag() < radius) {
+            return true;
+        }
+        return false;
+    }
+
+    private void calcMass(){
+        mass = density * Math.PI * radius * radius;
+    }
+
+    /* ------- GETS AND SETS -------- */
+
     public Vector2D getLocation() {
         return location;
     }
 
     public void setLocation(Vector2D location) {
       this.location = location;
-    }
-
-    private void calcMass(){
-        mass = density * Math.PI * radius * radius;
     }
 
     public double getMass() {
@@ -56,15 +69,6 @@ public abstract class Thing {
         this.calcMass();
     }
 
-    public boolean isInside(int x, int y) {
-        Vector2D point = new Vector2D(x, y);
-        Vector2D dist = Vector2D.sub(location, point);
-        if(dist.mag() < radius) {
-            return true;
-        }
-        return false;
-    }
-
     public boolean isOn() {
         return on;
     }
@@ -72,4 +76,5 @@ public abstract class Thing {
     public void setOn(boolean on) {
         this.on = on;
     }
+
 }

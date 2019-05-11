@@ -1,12 +1,13 @@
 package graphics.cw.particles;
 
-import graphics.cw.Constants;
-
+/***
+ * A class to hold static Mathematical expressions
+ */
 public class Physics {
 
     public static Vector2D calculateGravitationalAttraction(Thing particleOne, Thing particleTwo) {
         // F = G * m * m / r^2
-        double G = Constants.gravitationalConstant;
+        double G = 1;
 
         Vector2D dist_between_particles = Vector2D.sub(particleOne.getLocation(), particleTwo.getLocation());
         Vector2D force_gravitational_attraction = dist_between_particles.unit();

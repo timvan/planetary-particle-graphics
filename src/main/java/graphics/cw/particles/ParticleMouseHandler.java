@@ -2,13 +2,13 @@ package graphics.cw.particles;
 
 import graphics.cw.Constants;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
+/***
+ * Input handler class for particle system
+ */
 public class ParticleMouseHandler {
-  ParticleSystem ps;
-  Thing thingClicked;
-  boolean dragOccured = false;
+  private ParticleSystem ps;
+  private Thing thingClicked;
+  private boolean dragOccured = false;
 
   public ParticleMouseHandler(ParticleSystem ps) {
     this.ps = ps;
@@ -59,15 +59,7 @@ public class ParticleMouseHandler {
         thing.setDensity(thing.getDensity() * (1 - Constants.growthRate));
       }
     }
-    if(key == '1') {
-      ps.newSpawner(mouseX, mouseY);
-    }
-    if(key == '2') {
-      ps.newFeature(mouseX, mouseY, true);
-    }
-    if(key == '3') {
-      ps.newFeature(mouseX, mouseY, false);
-    }
+
     if(key == 'x' || key == 'X') {
       ps.deleteThing(mouseX, mouseY);
     }
@@ -76,6 +68,16 @@ public class ParticleMouseHandler {
     }
     if(key == 'c' || key == 'C') {
       ps.clearAll();
+    }
+
+    if(key == '1') {
+      ps.newSpawner(mouseX, mouseY);
+    }
+    if(key == '2') {
+      ps.newFeature(mouseX, mouseY, true);
+    }
+    if(key == '3') {
+      ps.newFeature(mouseX, mouseY, false);
     }
   }
 }

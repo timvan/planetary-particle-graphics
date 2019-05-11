@@ -1,9 +1,16 @@
 package graphics.cw.particles;
 
 import graphics.cw.Constants;
-
 import java.util.ArrayList;
 
+/***
+ * This is the world / particle system
+ * In a particle system there areparticles, features and spawners
+ *  particles - moving Things that has gravitational force applied to it
+ *  features - static Things that applies gravitational to particles
+ *  spawners - static Things that create particles
+ * A particle system must be setup, then updated each draw cycle
+ */
 public class ParticleSystem {
 
     private int nParticles = Constants.startingParticles;
@@ -13,12 +20,8 @@ public class ParticleSystem {
     private ArrayList<Particle> particles = new ArrayList<>();
     private ArrayList<Feature> features = new ArrayList<>();
     private ArrayList<Spawner> spawners = new ArrayList<>();
-    private Goal goal;
 
-    Grid grid;
-
-    public ParticleSystem(Grid grid) {
-        this.grid = grid;
+    public ParticleSystem() {
     }
 
     public void setup(){
@@ -34,11 +37,9 @@ public class ParticleSystem {
         }
 
         for(int i = 0; i < nSpawners; i++) {
-            Spawner newSpawner = ThingBuilder.newSpawner(particles);
+            Spawner newSpawner = ThingBuilder.newSpawner();
             spawners.add(newSpawner);
         }
-
-        goal = ThingBuilder.newGoal();
 
     }
 
@@ -48,32 +49,29 @@ public class ParticleSystem {
                 Vector2D gForce = Physics.calculateGravitationalAttraction(feature, particle);
                 particle.applyForce(gForce);
             }
-
             particle.update();
         }
         for(Spawner spawner: spawners){
-            spawner.update();
+            if(spawner.spawnTime()){
+                particles.add(spawner.spawn());
+            }
         }
     }
 
-    public Goal getGoal() {
-        return goal;
-    }
-
     public ArrayList<Particle> getParticles() {
-        return particles;
+        return new ArrayList<>(particles);
     }
 
     public ArrayList<Feature> getFeatures() {
-        return features;
+        return new ArrayList<>(features);
     }
 
     public ArrayList<Spawner> getSpawners() {
-        return spawners;
+        return new ArrayList<>(spawners);
     }
 
     public void newSpawner(int mouseX, int mouseY){
-        Spawner newSpawner = ThingBuilder.newSpawner(new Vector2D(mouseX, mouseY), particles);
+        Spawner newSpawner = ThingBuilder.newSpawner(new Vector2D(mouseX, mouseY));
         spawners.add(newSpawner);
     }
 
@@ -90,7 +88,6 @@ public class ParticleSystem {
             if(spawner.isInside(mouseX, mouseY)){ return spawner; }
         }
 
-        if(goal.isInside(mouseX, mouseY)){ return goal; }
         return null;
     }
 
@@ -117,5 +114,17 @@ public class ParticleSystem {
         particles.clear();
         spawners.clear();
         features.clear();
+    }
+
+    public void setParticlesMaxSpeed(double maxSpeed){
+        for(Particle p : particles){
+            p.setMaxSpeed(maxSpeed);
+        }
+    }
+
+    public void setSpawnRate(int rate){
+        for(Spawner s : spawners) {
+            s.setMaxRate(rate);
+        }
     }
 }

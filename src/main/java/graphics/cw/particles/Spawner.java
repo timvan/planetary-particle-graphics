@@ -2,36 +2,52 @@ package graphics.cw.particles;
 
 import graphics.cw.Constants;
 
-import java.util.ArrayList;
-
+/***
+ * A spawner is a Thing that creates new particles from within it.
+ * A spawner has a rate of firing which can be checked with spawnTime
+ */
 public class Spawner extends Thing {
 
-    ArrayList<Particle> particles;
-    int counter;
-    int rate;
+    private int counter;
+    private int rate;
+    private int maxRate;
 
-    public Spawner(Vector2D location, ArrayList<Particle> particles) {
+    public Spawner(Vector2D location) {
         super(location);
-        this.particles = particles;
         counter = 0;
-        rate = 10;
+        rate = Constants.spawnRate;
+        maxRate = Constants.spawnRate;
     }
 
-    public void generate() {
-        if(particles.size() > Constants.maxParticles){
-            particles.remove(0);
+    public Particle spawn() {
+        Particle newParticle = ThingBuilder.newParticle(this.getLocation().copy());
+        return newParticle;
+    }
+
+    public boolean spawnTime() {
+        if(this.isOn()) {
+            if ((maxRate - rate) == 0) {
+                return true;
+            }
+            if ((maxRate - rate) - counter++ <= 0) {
+                counter = 0;
+                return true;
+            }
         }
-        Particle newParticle = ThingBuilder.newParticle(this.getLocation().copy(), 0);
-        particles.add(newParticle);
+        return false;
+    }
+
+    public void setMaxRate(int rate) {
+        if(rate != 0){
+            this.setOn(true);
+            this.rate = rate;
+            return;
+        }
+        this.setOn(false);
     }
 
     @Override
-    public void update() {
-        if(counter % rate == 0 && this.isOn()) {
-            this.generate();
-            counter = 0;
-        }
-        counter++;
-    }
+    public void update() {}
+
 
 }

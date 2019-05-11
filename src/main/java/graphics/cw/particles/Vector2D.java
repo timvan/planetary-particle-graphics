@@ -1,7 +1,9 @@
 package graphics.cw.particles;
 
-import sun.nio.cs.ext.MacHebrew;
-
+/***
+ * Position vector class
+ * Used for Euclidean vector mathematics
+ */
 public class Vector2D {
 
     private double x;
@@ -50,17 +52,14 @@ public class Vector2D {
         return v2;
     }
 
-    public void div(double n) {
-        if(n != 0){
-            x = x / n;
-            y = y / n;
-        }
+    public void div(double n) throws ArithmeticException {
+        if(n == 0) throw new ArithmeticException();
+        x = x / n;
+        y = y / n;
     }
 
-    public static Vector2D div(Vector2D v1, double n) {
-		if(n == 0){
-		    throw new Error("Cannot devide by zero");
-		}
+    public static Vector2D div(Vector2D v1, double n) throws ArithmeticException {
+        if(n == 0) throw new ArithmeticException();
         return new Vector2D (v1.x / n, v1.y / n);
     }
 

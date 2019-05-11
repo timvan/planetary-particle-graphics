@@ -1,15 +1,19 @@
-package graphics.cw.display;
+package graphics.cw.gui.InfoButton;
 
+import graphics.cw.display.ColorPalette;
+import graphics.cw.display.Display;
+import graphics.cw.display.TextAlign;
 import graphics.cw.particles.Vector2D;
 
 import java.awt.*;
 
+/***
+ * An info circle with ? question mark
+ */
 public class InfoCircle {
-    private boolean show = false;
     Display display;
 
-    private int radius = 10;
-
+    private int radius = 15;
     private int x;
     private int y;
 
@@ -21,7 +25,7 @@ public class InfoCircle {
 
     public void draw() {
         this.display.drawCircle(new Vector2D(x, y), radius, Color.WHITE);
-        this.display.drawCircle(new Vector2D(x, y), radius * 0.8, Color.BLACK);
+        this.display.drawCircle(new Vector2D(x, y), radius * 0.8, ColorPalette.background);
         this.display.drawText(new Vector2D(x, y), radius * 1.2, Color.WHITE, "?", TextAlign.CENTER);
     }
 
@@ -33,6 +37,5 @@ public class InfoCircle {
         }
         return false;
     }
-
 
 }
