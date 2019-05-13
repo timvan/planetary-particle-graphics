@@ -1,11 +1,15 @@
 package graphics.cw.particles;
 
 import graphics.cw.Constants;
+import graphics.cw.display.ColorPalette;
+import graphics.cw.display.Display;
+import graphics.cw.display.RGB;
+
 import java.util.ArrayList;
 
 /***
  * This is the world / particle system
- * In a particle system there areparticles, features and spawners
+ * In a particle system there arep articles, features and spawners
  *  particles - moving Things that has gravitational force applied to it
  *  features - static Things that applies gravitational to particles
  *  spawners - static Things that create particles
@@ -53,8 +57,24 @@ public class ParticleSystem {
         }
         for(Spawner spawner: spawners){
             if(spawner.spawnTime()){
+                if(particles.size() >= Constants.maxParticles){
+                    particles.remove(0);
+                }
                 particles.add(spawner.spawn());
             }
+        }
+    }
+
+    public void draw(Display display) {
+        for(Particle particle : particles){
+            particle.draw(display);
+        }
+        for(Feature feature : features){
+            feature.draw(display);
+
+        }
+        for(Spawner spawner : spawners){
+            spawner.draw(display);
         }
     }
 

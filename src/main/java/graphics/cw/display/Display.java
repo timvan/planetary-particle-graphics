@@ -20,16 +20,18 @@ public class Display {
 
     public void drawBackground(int width, int height){
         // draw background
+        sketch.pushMatrix();
         RGB c = ColorPalette.background;
         sketch.fill(c.getRed(), c.getGreen(), c.getBlue(), (float) 100);
         sketch.translate(0, 0);
         sketch.rectMode(1);
         sketch.rect(0, 0, width, height);
+        sketch.popMatrix();
     }
 
-    public void drawCircle(Vector2D location, double size, Color color) {
+    public void drawCircle(double x, double y, double size, Color color) {
         sketch.pushMatrix();
-        sketch.translate((float) location.getX(), (float) location.getY());
+        sketch.translate((float) x, (float) y);
         sketch.noStroke();
         sketch.fill(color.getRGB());
         sketch.ellipseMode(2);
@@ -37,27 +39,27 @@ public class Display {
         sketch.popMatrix();
     }
 
-    public void drawCircle(Vector2D location, double size, RGB rgb) {
+    public void drawCircle(double x, double y, double size, RGB rgb) {
         sketch.pushMatrix();
-        sketch.translate((float) location.getX(), (float) location.getY());
+        sketch.translate((float) x, (float) y);
         sketch.fill((float) rgb.getRed(), (float) rgb.getGreen(), (float) rgb.getBlue());
         sketch.ellipseMode(2);
         sketch.ellipse(0, 0, (float) size, (float) size);
         sketch.popMatrix();
     }
 
-    public void drawCircle(Vector2D location, double size, RGB rgb, int alpha) {
+    public void drawCircle(double x, double y, double size, RGB rgb, int alpha) {
         sketch.pushMatrix();
-        sketch.translate((float) location.getX(), (float) location.getY());
+        sketch.translate((float) x, (float) y);
         sketch.fill((float) rgb.getRed(), (float) rgb.getGreen(), (float) rgb.getBlue(), alpha);
         sketch.ellipseMode(2);
         sketch.ellipse(0, 0, (float) size, (float) size);
         sketch.popMatrix();
     }
 
-    public void drawText(Vector2D location, double size, Color color, String s, TextAlign textAlign) {
+    public void drawText(double x, double y, double size, Color color, String s, TextAlign textAlign) {
         sketch.pushMatrix();
-        sketch.translate((float) location.getX(), (float) location.getY());
+        sketch.translate((float) x, (float) y);
         if(textAlign == TextAlign.CENTER) sketch.textAlign(PConstants.CENTER, PConstants.CENTER);
         if(textAlign == TextAlign.CORNER) sketch.textAlign(PConstants.LEFT, PConstants.TOP);
         sketch.textSize((float) size);
@@ -66,9 +68,9 @@ public class Display {
         sketch.popMatrix();
     }
 
-    public void drawRect(Vector2D location, double width, double height, RGB rgb) {
+    public void drawRect(double x, double y, double width, double height, RGB rgb) {
         sketch.pushMatrix();
-        sketch.translate((float) location.getX(), (float) location.getY());
+        sketch.translate((float) x, (float) y);
         sketch.noStroke();
         sketch.fill((float) rgb.getRed(), (float) rgb.getGreen(), (float) rgb.getBlue());
         sketch.rectMode(1);

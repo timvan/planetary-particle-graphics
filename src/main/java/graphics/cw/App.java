@@ -3,10 +3,7 @@
  */
 package graphics.cw;
 
-import com.sun.xml.internal.xsom.impl.Const;
-import graphics.cw.display.ColorPalette;
 import graphics.cw.display.Display;
-import graphics.cw.display.RGB;
 import graphics.cw.gui.InfoButton.Info;
 import graphics.cw.gui.Slider.Slider;
 import graphics.cw.particles.*;
@@ -23,19 +20,11 @@ public class App extends PApplet {
 
     private Display display;
     private ParticleSystem ps;
-    private ParticleMouseHandler particleMouseHandler;
+    private ParticleEventHandler particleEventHandler;
     private Info info;
-    private int infoPosX = 60;
-    private int infoPosY = 60;
-    private RGB particleColor = ColorPalette.particle;
-    private RGB spawnerColor = ColorPalette.spawner;
-    private RGB neagtiveFeatureColor = ColorPalette.neagtiveFeature;
-    private RGB postiveFeatureColor = ColorPalette.postiveFeature;
 
     private Slider maxSpeedSlider;
     private Slider spawnRateSlider;
-    double vOld;
-    double vNew;
 
     public void settings() {
         size(width, height, "processing.awt.PGraphicsJava2D");
@@ -44,53 +33,37 @@ public class App extends PApplet {
     public void setup() { ;
         display = new Display(this);
         ps = new ParticleSystem();
-        particleMouseHandler = new ParticleMouseHandler(ps);
-        info = new Info(display, infoPosX, infoPosY);
+        particleEventHandler = new ParticleEventHandler(ps);
+        info = new Info(60, 60);
         this.smooth();
         ps.setup();
         maxSpeedSlider = new Slider(50, height - 50);
         spawnRateSlider = new Slider(50, height - 80);
-
-        vOld = maxSpeedSlider.getValue();
     }
 
     public void draw() {
         // UPDATE stuff
         ps.update();
         info.handleMouse(mouseX, mouseY);
-        display.drawBackground(width, height);
-
         updateMaxSpeedSlider();
         updateSpawnRateSlider();
 
         // draw stuff
-        for(Particle particle : ps.getParticles()){
-            display.drawCircle(particle.getLocation(), particle.getRadius(), particleColor, 190);
-        }
-
-        for(Feature feature : ps.getFeatures()){
-            if(feature.getMass() < 0){
-                display.drawCircle(feature.getLocation(), feature.getRadius(), neagtiveFeatureColor);
-            } else {
-                display.drawCircle(feature.getLocation(), feature.getRadius(), postiveFeatureColor);
-            }
-
-        }
-
-        for(Spawner spawner : ps.getSpawners()){
-            display.drawCircle(spawner.getLocation(), spawner.getRadius(), spawnerColor);
-        }
-
+        display.drawBackground(width, height);
+        ps.draw(display);
         maxSpeedSlider.draw(display);
         spawnRateSlider.draw(display);
-        info.draw();
+        info.draw(display);
     }
 
+    // Register slider event response
     public void updateMaxSpeedSlider(){
         if(maxSpeedSlider.hasChanged()){
-            vNew = maxSpeedSlider.getValue();
+            double vNew = maxSpeedSlider.getValue();
             ps.setParticlesMaxSpeed(vNew * Constants.maxSpeed);
-            ThingBuilder.setParticleInitialVelcotiy((int) Math.round(vNew * Constants.maxSpeed));
+            Constants.setCurrentMaxSpeed(vNew * Constants.maxSpeed);
+
+            ThingBuilder.setParticleInitialVelocity((int) Math.round(vNew * Constants.maxSpeed));
             if(vNew < 0.001) {
                 ps.setSpawnRate(0);
             }
@@ -101,27 +74,29 @@ public class App extends PApplet {
         if(spawnRateSlider.hasChanged()){
             int newRate = (int) Math.round(spawnRateSlider.getValue() * Constants.spawnRate);
             ps.setSpawnRate(newRate);
+            Constants.setSpawnRate(newRate);
         }
     }
 
+    // Register event handlers
     public void mousePressed() {
-        particleMouseHandler.mousePressed(mouseX, mouseY);
+        particleEventHandler.mousePressed(mouseX, mouseY);
         maxSpeedSlider.handleMousePressed(mouseX, mouseY);
         spawnRateSlider.handleMousePressed(mouseX, mouseY);
     }
 
     public void mouseReleased() {
-        particleMouseHandler.mouseReleased(mouseX, mouseY);
+        particleEventHandler.mouseReleased(mouseX, mouseY);
     }
 
     public void mouseDragged() {
-        particleMouseHandler.mouseDragged(mouseX, mouseY);
+        particleEventHandler.mouseDragged(mouseX, mouseY);
         maxSpeedSlider.handleMouseDragged(mouseX, mouseY);
         spawnRateSlider.handleMousePressed(mouseX, mouseY);
     }
 
     public void keyPressed(){
-        particleMouseHandler.keyPressed(key, mouseX, mouseY);
+        particleEventHandler.keyPressed(key, mouseX, mouseY);
     }
 
     public static void main(String[] passedArgs) {

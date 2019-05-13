@@ -45,13 +45,9 @@ public class Slider {
     }
 
     public void draw(Display display) {
-        display.drawRect(new Vector2D(this.x, this.y), width, height, sliderAreaColor);
-        display.drawRect(new Vector2D(slideButton.getX(), this.y), this.buttonWidth, height, slideButtonColor);
+        display.drawRect(x, y, width, height, sliderAreaColor);
+        display.drawRect(slideButton.getX(), y, this.buttonWidth, height, slideButtonColor);
     }
-
-    // handle click
-    // handle drag
-    // handle release
 
     public featureType isIn(int x, int y){
         if(x >= this.x && x <= this.x + width) {

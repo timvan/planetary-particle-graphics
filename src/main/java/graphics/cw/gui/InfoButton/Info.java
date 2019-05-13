@@ -11,11 +11,11 @@ public class Info {
     private InfoCircle infoCircle;
     private boolean expanded;
 
-    public Info(Display display, int x, int y) {
+    public Info(int x, int y) {
         int x_off = 20;
         int y_off = 20;
-        infoCircle = new InfoCircle(display, x, y);
-        infoBox = new InfoBox(display, x - x_off, y - y_off);
+        infoCircle = new InfoCircle(x, y);
+        infoBox = new InfoBox(x - x_off, y - y_off);
         expanded = false;
     }
 
@@ -27,12 +27,12 @@ public class Info {
         }
     }
 
-    public void draw() {
+    public void draw(Display display) {
         if(expanded){
-            infoBox.draw();
+            infoBox.draw(display);
             return;
         }
-        infoCircle.draw();
+        infoCircle.draw(display);
     }
 
 }

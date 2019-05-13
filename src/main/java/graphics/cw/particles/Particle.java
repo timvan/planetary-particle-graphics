@@ -1,7 +1,9 @@
 package graphics.cw.particles;
 
 import graphics.cw.Constants;
-import processing.core.PVector;
+import graphics.cw.display.ColorPalette;
+import graphics.cw.display.Display;
+import graphics.cw.display.RGB;
 
 /***
  * Particles are moving Things
@@ -14,13 +16,15 @@ public class Particle extends Thing {
 
     private double maxSpeed;
 
+    private RGB particleColor = ColorPalette.particle;
+
     public Particle(Vector2D location) {
         super(location);
 
         velocity = new Vector2D(0, 0);
         acceleration = new Vector2D(0, 0);
 
-        maxSpeed = Constants.maxSpeed;
+        maxSpeed = Constants.currentMaxSpeed;
     }
 
     public void setVelocity(Vector2D velocity) {
@@ -36,6 +40,10 @@ public class Particle extends Thing {
         Vector2D location = this.getLocation();
         location.add(velocity);
         acceleration.mult(0);
+    }
+
+    public void draw(Display display) {
+        display.drawCircle(this.getLocation().getX(), this.getLocation().getY(), this.getRadius(), particleColor, 190);
     }
 
     public void applyForce(Vector2D force) {

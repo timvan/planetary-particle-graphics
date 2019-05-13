@@ -11,22 +11,20 @@ import java.awt.*;
  * An info circle with ? question mark
  */
 public class InfoCircle {
-    Display display;
 
     private int radius = 15;
     private int x;
     private int y;
 
-    public InfoCircle(Display display, int x, int y) {
-        this.display = display;
+    public InfoCircle(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    public void draw() {
-        this.display.drawCircle(new Vector2D(x, y), radius, Color.WHITE);
-        this.display.drawCircle(new Vector2D(x, y), radius * 0.8, ColorPalette.background);
-        this.display.drawText(new Vector2D(x, y), radius * 1.2, Color.WHITE, "?", TextAlign.CENTER);
+    public void draw(Display display) {
+        display.drawCircle(x, y, radius, Color.WHITE);
+        display.drawCircle(x, y, radius * 0.8, ColorPalette.background);
+        display.drawText(x, y, radius * 1.2, Color.WHITE, "?", TextAlign.CENTER);
     }
 
     public boolean isInside(int x, int y) {

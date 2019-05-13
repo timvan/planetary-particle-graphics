@@ -8,18 +8,18 @@ import graphics.cw.Constants;
  */
 public class ThingBuilder {
 
-    private static double particleMaxSpeed = Constants.maxSpeed;
-    private static int particleInitialVelcotiy = Constants.initialParticleVelocity;
+    private static double particleMaxSpeed = Constants.currentMaxSpeed;
+    private static int particleInitialVelocity = Constants.initialParticleVelocity;
 
-    public static void setParticleInitialVelcotiy(int particleInitialVelcotiy) {
-        ThingBuilder.particleInitialVelcotiy = particleInitialVelcotiy;
+    public static void setParticleInitialVelocity(int particleInitialVelocity) {
+        ThingBuilder.particleInitialVelocity = particleInitialVelocity;
     }
 
     public static Particle newParticle(){
         Particle newParticle = new Particle(Vector2D.newRandom(0, Constants.windowWidth, 0, Constants.windowHeight));
         newParticle.setDensity(Constants.particleDensity);
         newParticle.setRadius(Constants.particleRadius);
-        newParticle.setVelocity(Vector2D.newRandom(-particleInitialVelcotiy, particleInitialVelcotiy));
+        newParticle.setVelocity(Vector2D.newRandom(-particleInitialVelocity, particleInitialVelocity));
         newParticle.setMaxSpeed(particleMaxSpeed);
         return newParticle;
     }
@@ -28,7 +28,7 @@ public class ThingBuilder {
         Particle newParticle = new Particle(location);
         newParticle.setDensity(Constants.particleDensity);
         newParticle.setRadius(Constants.particleRadius);
-        newParticle.setVelocity(Vector2D.newRandom(-particleInitialVelcotiy, particleInitialVelcotiy));
+        newParticle.setVelocity(Vector2D.newRandom(-particleInitialVelocity, particleInitialVelocity));
         return newParticle;
     }
 

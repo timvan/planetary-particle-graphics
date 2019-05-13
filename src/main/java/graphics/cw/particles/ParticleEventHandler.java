@@ -5,12 +5,12 @@ import graphics.cw.Constants;
 /***
  * Input handler class for particle system
  */
-public class ParticleMouseHandler {
+public class ParticleEventHandler {
   private ParticleSystem ps;
   private Thing thingClicked;
   private boolean dragOccured = false;
 
-  public ParticleMouseHandler(ParticleSystem ps) {
+  public ParticleEventHandler(ParticleSystem ps) {
     this.ps = ps;
   }
 

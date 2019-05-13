@@ -13,7 +13,6 @@ import java.util.ArrayList;
  * An information box explaining the game
  */
 public class InfoBox {
-    private Display display;
     private int x;
     private int y;
     private int width;
@@ -23,8 +22,7 @@ public class InfoBox {
 
     private ArrayList<String> contents;
 
-    public InfoBox(Display display, int x, int y) {
-        this.display = display;
+    public InfoBox(int x, int y) {
 
         contents = new ArrayList<>();
         contents.add("WELCOME TO GRAVITY SIM");
@@ -62,11 +60,11 @@ public class InfoBox {
         this.height = contents.size() * textSize + 5;
     }
 
-    public void draw() {
-        display.drawRect(new Vector2D(x, y), width, height, new RGB(255, 255, 179));
+    public void draw(Display display) {
+        display.drawRect(x, y, width, height, new RGB(255, 255, 179));
         int i = 0;
         for(String line : contents){
-            display.drawText(new Vector2D(x + 5, y + i * textSize), textSize, Color.BLACK, line, TextAlign.CORNER);
+            display.drawText(x + 5, y + i * textSize, textSize, Color.BLACK, line, TextAlign.CORNER);
             i++;
         }
     }
